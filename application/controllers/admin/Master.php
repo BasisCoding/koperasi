@@ -9,6 +9,14 @@
 			$this->load->model('MasterModel');
 		}
 	// Master Barang
+
+		public function get_by_id()
+		{
+			$id = $this->input->post('id');
+			$data = $this->db->get_where('barang', array('id' => $id))->row();
+			echo json_encode($data);	
+		}
+
 		public function barang()
 		{
 			$this->load->view('partials/head');
@@ -144,7 +152,6 @@
 			echo json_encode($response);
 		}
 
-
 		public function update_kategori()
 		{
 			$id = $this->input->post('id_kategori_update');
@@ -171,6 +178,77 @@
 		}
 	// Master Barang
 
+	// Master Supplier
+		public function supplier()
+		{
+			$this->load->view('partials/head');
+			$this->load->view('partials/header');
+			$this->load->view('partials/sidebar');
+			$this->load->view('admin/data_supplier');
+			$this->load->view('partials/footer');
+		}
+
+		public function data_supplier()
+		{
+			$html = '';
+			$status = '';
+			$data = $this->MasterModel->data_supplier();
+			$no = 1;
+			foreach ($data as $dp) {
+				
+				$html .= '<tr>
+							<th class="text-center align-middle">'.$no++.'</th>
+							<th class="text-center align-middle">'.$dp->nama_supplier.'</th>
+							<th class="text-center align-middle">
+								<button class="btn btn-warning edit-supplier" data-id="'.$dp->id_supplier.'" data-nama="'.$dp->nama_supplier.'"><span class="fa fa-edit text-white"></span></button>
+								<button class="btn btn-danger delete-supplier" data-id="'.$dp->id_supplier.'" data-nama="'.$dp->nama_supplier.'"><span class="fa fa-trash text-white"></span></button>
+							</th>
+						</tr>';
+			}
+			echo $html;
+		}
+
+		public function add_supplier()
+		{
+			$data['nama_supplier'] = $this->input->post('nama_supplier');
+			
+			$this->MasterModel->add_supplier($data);
+			$response = array(
+				'status' => 'success',
+				'message' => 'Data Berhasil Disimpan',
+			);
+
+			echo json_encode($response);
+		}
+
+		public function update_supplier()
+		{
+			$id = $this->input->post('id_supplier_update');
+			$data['nama_supplier'] = $this->input->post('nama_supplier_update');
+			
+			$this->MasterModel->update_supplier($id, $data);
+			$response = array(
+				'status' => 'success',
+				'message' => 'Data Berhasil Disimpan',
+			);
+
+			echo json_encode($response);
+		}
+
+		public function delete_supplier()
+		{
+			$id = $this->input->post('id');
+			
+			$this->MasterModel->delete_supplier($id);
+			$response = array(
+				'status' => 'success',
+				'message' => 'Data Berhasil Disimpan',
+			);
+
+			echo json_encode($response);
+		}
+	// End Master Supplier
+	
 	}
 	
 	/* End of file Master.php */

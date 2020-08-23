@@ -112,7 +112,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Kategori Barang</label>
-                <select class="form-control" name="kategori">
+                <select class="form-control select2" style="width: 100%;" name="kategori">
                   <?php 
                     $select = $this->db->get('kategori')->result();
                     foreach ($select as $sl) {?>

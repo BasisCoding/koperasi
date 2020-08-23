@@ -49,6 +49,41 @@
 		{
 			$this->db->delete('kategori', array('id_kategori'=>$id));
 		}
+
+		function data_supplier()
+		{
+			return $this->db->get('supplier')->result();
+		}
+
+		function riwayat_persediaan()
+		{
+			$this->db->select('*');
+			$this->db->from('persediaan');
+			$this->db->join('barang', 'barang.id = persediaan.id_barang', 'left');
+			$this->db->join('user', 'user.id_user = persediaan.created_by', 'left');
+			$this->db->join('supplier', 'supplier.id_supplier = persediaan.id_supplier', 'left');
+			return $this->db->get()->result();
+		}
+
+		function add_riwayat_persediaan($data)
+		{
+			$this->db->insert('persediaan', $data);
+		}
+
+		function add_supplier($data)
+		{
+			$this->db->insert('supplier', $data);
+		}
+
+		function update_supplier($id, $data)
+		{
+			$this->db->update('supplier', $data, array('id_supplier' => $id));
+		}
+
+		function delete_supplier($id)
+		{
+			$this->db->delete('supplier', array('id_supplier' => $id));
+		}
 	
 	}
 	

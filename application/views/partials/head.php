@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>ZaisMart</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -16,6 +16,8 @@
   <!-- JQVMap -->
   <link rel="stylesheet" href="<?= base_url('assets/plugins
   /jqvmap/jqvmap.min.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('assets/plugins/select2/css/select2.min.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') ?>">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url('assets/plugins/toastr/toastr.min.css') ?>">
@@ -32,5 +34,5 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <script>var base_url = '<?= base_url() ?>';</script>
 </head>
-<body class="sidebar-mini layout-fixed text-sm">
+<body class="sidebar-mini layout-fixed">
 <div class="wrapper">

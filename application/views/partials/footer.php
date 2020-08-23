@@ -24,6 +24,8 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+<!-- Select2 -->
+<script src="<?= base_url('assets/plugins/select2/js/select2.full.min.js') ?>"></script>
 <!-- ChartJS -->
 <script src="<?= base_url('assets/plugins/chart.js/Chart.min.js') ?>"></script>
 <!-- Sparkline -->
@@ -61,6 +63,9 @@
 
 <script type="text/javascript">
   $(function () {
+    $('.select2').select2({
+      theme: 'bootstrap4'
+    });
     Inputmask.extendAliases({
       rupiah: {
                 prefix: " Rp ",
