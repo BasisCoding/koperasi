@@ -7,6 +7,7 @@
 		{
 			parent::__construct();
 			$this->load->model('MasterModel');
+			$this->load->model('TransaksiModel');
 		}
 	
 	// Persediaan
@@ -40,7 +41,58 @@
 			}
 			echo $html;
 		}
+		public function add_transaksi()
+		{
+			$id_barang			 	= $this->input->post('id_barang_transaksi');
+			$stok_lama			 	= $this->input->post('stok_transaksi');
+			$data['kode_barang'] 	= $this->input->post('kode_barang_transaksi');
+			$data['jumlah'] 		= $this->input->post('jumlah_transaksi');
+			$data['harga_barang'] 	= $this->input->post('harga_transaksi');
+			$data['total_bayar'] 	= $this->input->post('total_bayar_transaksi');
+			$data['keterangan'] 	= $this->input->post('keterangan_transaksi');
+			$data['created_at'] 	= date('Y-m-d H:i:s');
+			$data['created_by'] 	= $this->session->userdata('id');
 
+			if ($data['jumlah'] > $stok_lama) {
+				$response = array(
+					'status' => 'error',
+					'message' => 'Jumlah Barang Tidak Boleh Melebihi Stok',
+				);
+			}else{
+				$barang['stok'] = $stok_lama - $data['jumlah'];
+				$this->MasterModel->update_barang($id_barang, $barang);
+				$this->TransaksiModel->add_transaksi($data);
+
+				$response = array(
+					'status' => 'success',
+					'message' => 'Transaksi Berhasil',
+				);
+			}
+
+			echo json_encode($response);
+		}
+
+		public function riwayat_transaksi()
+		{
+			$html = '';
+			$data = $this->TransaksiModel->riwayat_transaksi();
+			$no = 1;
+			foreach ($data as $dp) {
+				
+				$html .= '<tr>
+							<th class="text-center align-middle">'.$no++.'</th>
+							<th class="text-center align-middle">'.$dp->kode_barang.'</th>
+							<th class="align-middle">'.$dp->nama_barang.'</th>
+							<td class="align-middle text-center">'.$dp->jumlah.'</td>
+							<td class="align-middle text-center">Rp. '.number_format($dp->harga_barang).'</td>
+							<td class="align-middle text-center">Rp. '.number_format($dp->total_bayar).'</td>
+							<th class="align-middle">'.$dp->keterangan.'</th>
+							<td class="align-middle text-center">'.date('d-m-Y H:i:s', strtotime($dp->created_at)).'</td>
+							<td class="align-middle text-center">'.$dp->nama_user.'</td>
+						</tr>';
+			}
+			echo $html;
+		}
 	
 	}
 	

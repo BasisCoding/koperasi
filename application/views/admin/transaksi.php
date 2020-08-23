@@ -76,9 +76,7 @@
 
                   <div class="form-group">
                     <label>Keterangan</label>
-                    <textarea class="form-control" name="keterangan_transaksi">
-                      
-                    </textarea>
+                    <textarea class="form-control" name="keterangan_transaksi"></textarea>
                   </div>  
 
                   <button class="btn btn-info col" id="btn-save-add-transaksi">Beli</button>  
@@ -130,6 +128,7 @@
                       <th class="align-middle text-center">Kode Barang</th>
                       <th class="align-middle text-center">Nama Barang</th>
                       <th class="align-middle text-center">Jumlah Barang</th>
+                      <th class="align-middle text-center">Harga Barang</th>
                       <th class="align-middle text-center">Total Bayar</th>
                       <th class="align-middle text-center">Keterangan</th>
                       <th class="align-middle text-center">Tanggal</th>

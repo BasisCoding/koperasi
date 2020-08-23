@@ -433,15 +433,15 @@ $(document).ready(function() {
             }
         });
 
-        // $.ajax({
-        //     url: base_url+'admin/Transaksi/riwayat_transaksi',
-        //     type: 'POST',
-        //     dataType: 'HTML',
-        //     async:false,
-        //     success:function (data) {
-        //         $('#data-riwayat-transaksi').html(data);
-        //     }
-        // });
+        $.ajax({
+            url: base_url+'admin/Transaksi/riwayat_transaksi',
+            type: 'POST',
+            dataType: 'HTML',
+            async:false,
+            success:function (data) {
+                $('#riwayat-transaksi').html(data);
+            }
+        });
     }
 
     $('#table-barang-transaksi').DataTable({
@@ -486,14 +486,14 @@ $(document).ready(function() {
                 $("#btn-save-add-transaksi").attr('disabled', true);
             },
             success:function(response) {
-                $("#form-add-supplier").trigger("reset");
-                $("#btn-save-add-transaksi").html('Save');
+                $("#form-add-transaksi").trigger("reset");
+                $("#btn-save-add-transaksi").html('Beli Lagi');
                 $("#btn-save-add-transaksi").attr('disabled', false);
                 Toast.fire({
                     icon: response.status,
                     title: response.message
                 });
-                data_supplier_reload();
+                data_reload_transaksi();
             }
         });
 
