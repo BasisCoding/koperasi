@@ -121,7 +121,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body p-1">
-                <table class="table table-sm" id="table-riwayat-transaksi">
+                <table class="table" id="table-riwayat-transaksi">
                   <thead>
                     <tr>
                       <th class="align-middle" style="width: 10px">#</th>

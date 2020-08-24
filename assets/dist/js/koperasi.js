@@ -11,6 +11,7 @@ $(document).ready(function() {
     data_persediaan_reload();
     data_supplier_reload();
     data_reload_transaksi();
+    laporan_persediaan();
 
 // Halaman Barang
 	function data_reload() {
@@ -36,13 +37,49 @@ $(document).ready(function() {
 	}
 
 	$('#table-barang').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+        dom: "<'row'<'col-sm-12 col-md-6 mt-1'B><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        buttons: [
+            {
+                extend:    'excel',
+                className: 'btn btn-sm',
+            },
+            {
+                extend:    'pdf',
+                className: 'btn btn-sm',
+
+            },
+            {
+                extend:    'print',
+                className: 'btn btn-sm',
+
+            }
+        ],
+        responsive:true
+    });
+
+    $('#table-riwayat-persediaan').DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6 mt-1'B><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        buttons: [
+            {
+                extend:    'excel',
+                className: 'btn btn-sm',
+            },
+            {
+                extend:    'pdf',
+                className: 'btn btn-sm',
+
+            },
+            {
+                extend:    'print',
+                className: 'btn btn-sm',
+
+            }
+        ],
+        responsive:true
     });
 
     $('#form-add-barang').submit(function() {
@@ -500,4 +537,64 @@ $(document).ready(function() {
         return false;
     });    
 // End Halaman Transaksi
+
+// Halaman Laporan Persediaan
+    function laporan_persediaan() {
+        $.ajax({
+            url: base_url+'yayasan/Persediaan/data_persediaan',
+            type: 'POST',
+            dataType: 'HTML',
+            async:false,
+            success:function (data) {
+                $('#data-laporan-persediaan').html(data);
+            }
+        });
+    }
+
+    $('#table-laporan-persediaan').DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6 mt-1'B><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        buttons: [
+            {
+                extend:    'excel',
+                className: 'btn btn-sm',
+            },
+            {
+                extend:    'pdf',
+                className: 'btn btn-sm',
+
+            },
+            {
+                extend:    'print',
+                className: 'btn btn-sm',
+
+            }
+        ],
+        responsive:true
+    });
+
+    $('#table-riwayat-transaksi').DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6 mt-1'B><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        buttons: [
+            {
+                extend:    'excel',
+                className: 'btn btn-sm',
+            },
+            {
+                extend:    'pdf',
+                className: 'btn btn-sm',
+
+            },
+            {
+                extend:    'print',
+                className: 'btn btn-sm',
+
+            }
+        ],
+        responsive:true
+    });
+// End Halaman Laporan Persediaan
 });

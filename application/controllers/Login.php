@@ -38,7 +38,7 @@
 								'redirect' => $ck->link
 							);
 				}
-				$this->session->set_userdata( $data_session );
+				$this->session->set_userdata($data_session);
 			}else{
 				$response = array(
 							'status' => 'error',

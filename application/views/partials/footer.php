@@ -28,16 +28,6 @@
 <script src="<?= base_url('assets/plugins/select2/js/select2.full.min.js') ?>"></script>
 <!-- ChartJS -->
 <script src="<?= base_url('assets/plugins/chart.js/Chart.min.js') ?>"></script>
-<!-- Sparkline -->
-<!-- <script src="<?= base_url('assets/plugins/sparklines/sparkline.js') ?>"></script> -->
-<!-- JQVMap -->
-<script src="<?= base_url('assets/plugins/jqvmap/jquery.vmap.min.js') ?>"></script>
-<script src="<?= base_url('assets/plugins/jqvmap/maps/jquery.vmap.usa.js') ?>"></script>
-<!-- jQuery Knob Chart -->
-<script src="<?= base_url('assets/plugins/jquery-knob/jquery.knob.min.js') ?>"></script>
-<!-- daterangepicker -->
-<script src="<?= base_url('assets/plugins/moment/moment.min.js') ?>"></script>
-<script src="<?= base_url('assets/plugins/daterangepicker/daterangepicker.js') ?>"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="<?= base_url('assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') ?>"></script>
 <!-- Summernote -->
@@ -49,8 +39,9 @@
 <!-- DataTables -->
 <script src="<?= base_url('assets/plugins/datatables/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') ?>"></script>
-<script src="<?= base_url('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') ?>"></script>
-<script src="<?= base_url('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') ?>"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-colvis-1.6.3/b-flash-1.6.3/b-html5-1.6.3/b-print-1.6.3/r-2.2.5/datatables.min.js"></script>
 <script src="<?= base_url('assets/plugins/sweetalert2/sweetalert2.min.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/toastr/toastr.min.js') ?>"></script>
 <!-- AdminLTE App -->

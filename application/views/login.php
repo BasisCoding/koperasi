@@ -96,7 +96,6 @@
 				dataType: 'JSON',
 				data:{username:username, password:password},
 				success:function (response) {
-					console.log(response.status);
 					if (response.status == 'success') {
 						window.location.href = base_url+response.redirect+'/Dashboard';
 					}else{	
