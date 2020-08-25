@@ -48,7 +48,11 @@
 			}
 			echo json_encode($response);
 		}
-	
+		
+		public function Logout()
+		{
+			
+		}
 	}
 	
 	/* End of file Login.php */
