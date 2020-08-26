@@ -34,18 +34,9 @@
 			foreach ($data as $dp) {
 				$html .= '<tr>
 							<th class="align-middle">
-								<button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-			                      <span class="fa fa-align-justify"></span>
-				                    <ul class="dropdown-menu">
-				                      <li class="dropdown-item">
-				                      	<a class="update-barang" data-id="'.$dp->id.'" data-nama="'.$dp->nama_barang.'" data-kode="'.$dp->kode_barang.'" data-deskripsi="'.$dp->deskripsi.'" data-kategori="'.$dp->kategori.'" data-harga="'.$dp->harga.'">Update</a>
-				                      </li>
-				                      <li class="dropdown-item">
-				                      	<a class="delete-barang" data-id="'.$dp->id.'" data-nama="'.$dp->nama_barang.'" data-kode="'.$dp->kode_barang.'" data-deskripsi="'.$dp->deskripsi.'" data-kategori="'.$dp->kategori.'" data-harga="'.$dp->harga.'">Delete</a>
-				                      </li>
-				                      <li class="dropdown-item"><a href="#">View</a></li>
-				                    </ul>
-			                    </button>
+								<a class="update-barang btn btn-sm" data-id="'.$dp->id.'" data-nama="'.$dp->nama_barang.'" data-kode="'.$dp->kode_barang.'" data-deskripsi="'.$dp->deskripsi.'" data-kategori="'.$dp->kategori.'" data-harga="'.$dp->harga.'"><span class="fa fa-edit"></span></a>
+								
+				                <a class="delete-barang btn btn-sm" data-id="'.$dp->id.'" data-nama="'.$dp->nama_barang.'" data-kode="'.$dp->kode_barang.'" data-deskripsi="'.$dp->deskripsi.'" data-kategori="'.$dp->kategori.'" data-harga="'.$dp->harga.'"><span class="fa fa-trash"></span></a>
 							</th>
 							<th class="text-center align-middle">'.$dp->kode_barang.'</th>
 							<th class="align-middle">'.$dp->nama_barang.'</th>

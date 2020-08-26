@@ -51,7 +51,13 @@
 		
 		public function Logout()
 		{
-			
+			$logout = $this->session->sess_destroy();
+			$response = array(
+							'status' => 'success',
+							'message' => 'Anda Berhasil Logout',
+							'redirect' => 'Login'
+						);
+			echo json_encode($response);
 		}
 	}
 	

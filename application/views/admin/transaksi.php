@@ -117,7 +117,20 @@
           <div class="col-md">
             <div class="card">
               <div class="card-header bg-dark">
-                <h3 class="card-title">Riwayat Transaksi</h3>
+                <h3 class="card-title float-left">Riwayat Transaksi</h3>
+                <div class="float-right">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="far fa-calendar-alt"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-control form-control-sm float-right" id="reservation">
+                    </div>
+                    <!-- /.input group -->
+                  </div>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-1">

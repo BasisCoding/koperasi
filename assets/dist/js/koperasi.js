@@ -63,7 +63,7 @@ $(document).ready(function() {
         return false;
     });
 
-    $('.dropdown-menu').on('click', '.update-barang', function(event) {
+    $('#data-barang').on('click', '.update-barang', function(event) {
     	event.preventDefault();
     	var id = $(this).attr('data-id');
     	var kode = $(this).attr('data-kode');
@@ -82,7 +82,7 @@ $(document).ready(function() {
     	$('#modal-update-barang').modal('show');
     });
 
-    $('.dropdown-menu').on('click', '.delete-barang', function(event) {
+    $('#data-barang').on('click', '.delete-barang', function(event) {
     	event.preventDefault();
     	var id = $(this).attr('data-id');
     	var nama = $(this).attr('data-nama');
@@ -542,7 +542,6 @@ $(document).ready(function() {
         responsive:true
     });
 // End Halaman Laporan Persediaan
-
 
     $('#table-barang').DataTable({
         dom: "<'row'<'col-sm-12 col-md-6 mt-1'B><'col-sm-12 col-md-6'f>>" +

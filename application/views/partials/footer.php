@@ -25,10 +25,10 @@
 <!-- Bootstrap 4 -->
 <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-flash-1.6.3/b-html5-1.6.3/b-print-1.6.3/r-2.2.5/datatables.min.js"></script>
+<!-- DataTables -->
+<script src="<?= base_url('assets/plugins/datatables/datatables.min.js') ?>"></script>
 
+<script src="<?= base_url('assets/plugins/moment/moment.min.js') ?>"></script>
 <!-- Select2 -->
 <script src="<?= base_url('assets/plugins/select2/js/select2.full.min.js') ?>"></script>
 <!-- ChartJS -->
@@ -40,6 +40,7 @@
 <!-- overlayScrollbars -->
 <script src="<?= base_url('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/daterangepicker/daterangepicker.js') ?>"></script>
 
 <script src="<?= base_url('assets/plugins/sweetalert2/sweetalert2.min.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/toastr/toastr.min.js') ?>"></script>
@@ -70,11 +71,39 @@
               autoUnmask: true,
             }
     });
-
+    $('#reservation').daterangepicker();
     $('.currency').inputmask({ alias : "rupiah"});
     $('[data-mask]').inputmask({
       removeMaskOnSubmit: true,
       autoUnmask: true,
+    });
+
+    $('#logout').click(function() {
+      Swal.fire({
+        title: 'Logout',
+        text: "Apakah Anda Yakin ingin Keluar ?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Logout!'
+      }).then((result) => {
+        if (result.value) {
+          $.ajax({
+            url: base_url+'Login/logout',
+            type: 'POST',
+            dataType:'json',
+            success:function (response) {
+              Swal.fire(
+                'Berhasil!',
+                'Anda Telah Keluar.',
+                'success'
+              );
+                window.location.href = base_url+response.redirect; 
+            }
+          });
+        }
+      })
     });
   });
 </script>
