@@ -44,30 +44,35 @@
 		public function add_transaksi()
 		{
 			$id_barang			 	= $this->input->post('id_barang_transaksi');
-			$stok_lama			 	= $this->input->post('stok_transaksi');
-			$data['kode_barang'] 	= $this->input->post('kode_barang_transaksi');
-			$data['jumlah'] 		= $this->input->post('jumlah_transaksi');
-			$data['harga_barang'] 	= $this->input->post('harga_transaksi');
-			$data['total_bayar'] 	= $this->input->post('total_bayar_transaksi');
-			$data['keterangan'] 	= $this->input->post('keterangan_transaksi');
-			$data['created_at'] 	= date('Y-m-d H:i:s');
-			$data['created_by'] 	= $this->session->userdata('id');
 
-			if ($data['jumlah'] > $stok_lama) {
-				$response = array(
-					'status' => 'error',
-					'message' => 'Jumlah Barang Tidak Boleh Melebihi Stok',
+			$result = array();
+			$update = array();
+
+			foreach ($id_barang as $id => $val) {
+				$result[] = array(
+					'kode_transaksi'=> $this->TransaksiModel->get_no_trx(),
+					'kode_barang' 	=> $_POST['kode_barang_transaksi'][$id],
+					'harga_barang' 	=> $_POST['harga_transaksi'][$id],
+					'total_bayar' 	=> $_POST['jumlah_transaksi'][$id]*$_POST['harga_transaksi'][$id],
+					'jumlah' 		=> $_POST['jumlah_transaksi'][$id],
+					'created_at' 	=> date('Y-m-d H:i:s'),
+					'created_by' 	=> $this->session->userdata('id')
 				);
-			}else{
-				$barang['stok'] = $stok_lama - $data['jumlah'];
-				$this->MasterModel->update_barang($id_barang, $barang);
-				$this->TransaksiModel->add_transaksi($data);
 
-				$response = array(
-					'status' => 'success',
-					'message' => 'Transaksi Berhasil',
+				$update[] = array(
+					'id'		=> $_POST['id_barang_transaksi'][$id],
+					'stok'		=> $_POST['stok_transaksi'][$id] - $_POST['jumlah_transaksi'][$id]
 				);
 			}
+
+			$this->db->update_batch('barang', $update, 'id');
+			// $this->TransaksiModel->add_transaksi($result);
+			$this->db->insert_batch('transaksi', $result);
+
+			$response = array(
+				'status' => 'success',
+				'message' => 'Transaksi Berhasil',
+			);
 
 			echo json_encode($response);
 		}
@@ -75,20 +80,109 @@
 		public function riwayat_transaksi()
 		{
 			$html = '';
-			$data = $this->TransaksiModel->riwayat_transaksi();
-			$no = 1;
-			foreach ($data as $dp) {
-				
+			$start = '';
+			$end = '';
+			if($this->input->post('dari'))
+		  	{
+		   		$start = $this->input->post('dari');
+		   		$end = $this->input->post('sampai');
+		  	}
+			$data = $this->TransaksiModel->riwayat_transaksi($start, $end);
+
+			if ($data->num_rows() > 0) {
+				$no = 1;
+				foreach ($data->result() as $dp) {
+					
 				$html .= '<tr>
 							<th class="text-center align-middle">'.$no++.'</th>
-							<th class="text-center align-middle">'.$dp->kode_barang.'</th>
-							<th class="align-middle">'.$dp->nama_barang.'</th>
-							<td class="align-middle text-center">'.$dp->jumlah.'</td>
-							<td class="align-middle text-center">Rp. '.number_format($dp->harga_barang).'</td>
-							<td class="align-middle text-center">Rp. '.number_format($dp->total_bayar).'</td>
-							<th class="align-middle">'.$dp->keterangan.'</th>
+							<th class="text-center align-middle">'.$dp->kode_transaksi.'</th>
+							<th class="align-middle">'.$dp->jumlah_barang.'</th>
+							<td class="align-middle text-center">'.$dp->total_quantity.'</td>
+							<td class="align-middle text-center">Rp. '.number_format($dp->total_harga).'</td>
 							<td class="align-middle text-center">'.date('d-m-Y H:i:s', strtotime($dp->created_at)).'</td>
 							<td class="align-middle text-center">'.$dp->nama_user.'</td>
+							<td class="align-middle text-center">
+								<button class="btn btn-info btn-sm mb-1 mb-lg-0 detail-transaksi" 
+									data-kode_transaksi="'.$dp->kode_transaksi.'" 
+									data-jumlah_barang="'.$dp->jumlah_barang.'" 
+									data-total_quantity="'.$dp->total_quantity.'" 
+									data-total_harga="'.number_format($dp->total_harga).'" 
+									data-created_at="'.date('d-m-Y H:i:s', strtotime($dp->created_at)).'" 
+									data-created_by="'.$dp->nama_user.'">
+
+									<span class="fa fa-bars"></span>
+								</button>
+							</td>
+						</tr>';
+				}
+			}else{
+				$html .= '<tr>
+							<td colspan="9" class="text-center">Tidak Ada Data</td>
+						</tr>';
+			}
+			echo $html;
+		}
+
+		function get_detail_transaksi()
+		{
+			$kode_transaksi = $this->input->post('kode');
+			$html = '';
+			$data = $this->TransaksiModel->get_detail_transaksi($kode_transaksi);
+			if ($data->num_rows() > 0) {
+				foreach ($data->result() as $dp) {
+					$html .= '<tr>
+								<td class="text-bold">'.$dp->kode_barang.'</td>
+								<td rowspan="2" class="align-middle">'.$dp->jumlah.' x Rp. '.number_format($dp->harga_barang).' = <b>Rp. '.number_format($dp->total_bayar).'</b></td>
+								<tr class="ml-4">
+									<td class="text-bold">'.$dp->nama_barang.'</td>
+								</tr>
+							</tr>';
+				}
+			}
+
+			echo $html;
+		}
+		
+		public function all_transaksi()
+		{
+			$this->load->view('partials/head');
+			$this->load->view('partials/header');
+			$this->load->view('partials/sidebar');
+			$this->load->view('admin/all_transaksi');
+			$this->load->view('partials/footer');
+		}
+
+		public function riwayat_all_transaksi()
+		{
+			$html = '';
+			$start = '';
+			$end = '';
+			if($this->input->post('dari'))
+		  	{
+		   		$start = $this->input->post('dari');
+		   		$end = $this->input->post('sampai');
+		  	}
+			$data = $this->TransaksiModel->riwayat_all_transaksi($start, $end);
+
+			if ($data->num_rows() > 0) {
+				$no = 1;
+				foreach ($data->result() as $dp) {
+					
+					$html .= '<tr>
+								<th class="text-center align-middle">'.$no++.'</th>
+								<th class="text-center align-middle">'.$dp->kode_transaksi.'</th>
+								<th class="text-center align-middle">'.$dp->kode_barang.'</th>
+								<th class="align-middle">'.$dp->nama_barang.'</th>
+								<td class="align-middle text-center">'.$dp->jumlah.'</td>
+								<td class="align-middle text-center">Rp. '.number_format($dp->harga_barang).'</td>
+								<td class="align-middle text-center">Rp. '.number_format($dp->total_bayar).'</td>
+								<td class="align-middle text-center">'.date('d-m-Y H:i:s', strtotime($dp->created_at)).'</td>
+								<td class="align-middle text-center">'.$dp->nama_user.'</td>
+							</tr>';
+				}
+			}else{
+				$html .= '<tr>
+							<td colspan="9" class="text-center">Tidak Ada Data</td>
 						</tr>';
 			}
 			echo $html;

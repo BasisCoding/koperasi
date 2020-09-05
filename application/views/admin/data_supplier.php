@@ -75,7 +75,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-<div class="modal fade" id="modal-update-supplier" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="modal-update-supplier" data-backdrop="false" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">

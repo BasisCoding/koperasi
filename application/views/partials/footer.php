@@ -71,7 +71,6 @@
               autoUnmask: true,
             }
     });
-    $('#reservation').daterangepicker();
     $('.currency').inputmask({ alias : "rupiah"});
     $('[data-mask]').inputmask({
       removeMaskOnSubmit: true,
@@ -103,7 +102,7 @@
             }
           });
         }
-      })
+      });
     });
   });
 </script>

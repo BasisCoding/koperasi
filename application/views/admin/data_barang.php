@@ -78,7 +78,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <div class="modal fade" id="modal-add-barang" style="display: none;" aria-hidden="true">
+  <div class="modal fade" id="modal-add-barang" data-backdrop="false" aria-hidden="true">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
@@ -167,7 +167,7 @@
     <!-- /.modal-dialog -->
   </div>
 
-  <div class="modal fade" id="modal-update-barang" style="display: none;" aria-hidden="true">
+  <div class="modal fade" id="modal-update-barang" data-backdrop="false" aria-hidden="true">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
@@ -243,7 +243,7 @@
     <!-- /.modal-dialog -->
   </div>
 
-  <div class="modal fade" id="modal-add-kategori" style="display: none;" aria-hidden="true">
+  <div class="modal fade" id="modal-add-kategori" data-backdrop="false" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
@@ -268,7 +268,7 @@
     <!-- /.modal-dialog -->
   </div>
 
-  <div class="modal fade" id="modal-update-kategori" style="display: none;" aria-hidden="true">
+  <div class="modal fade" id="modal-update-kategori" data-backdrop="false" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">

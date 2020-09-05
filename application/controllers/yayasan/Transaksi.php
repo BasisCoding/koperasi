@@ -20,6 +20,15 @@
 			$this->load->view('partials/footer');
 		}
 
+		public function all_transaksi()
+		{
+			$this->load->view('partials/head');
+			$this->load->view('partials/header');
+			$this->load->view('partials/sidebar');
+			$this->load->view('admin/all_transaksi');
+			$this->load->view('partials/footer');
+		}
+
 		public function data_barang()
 		{
 			$html = '';
@@ -42,28 +51,6 @@
 			echo $html;
 		}
 		
-		public function riwayat_transaksi()
-		{
-			$html = '';
-			$data = $this->TransaksiModel->riwayat_transaksi();
-			$no = 1;
-			foreach ($data as $dp) {
-				
-				$html .= '<tr>
-							<th class="text-center align-middle">'.$no++.'</th>
-							<th class="text-center align-middle">'.$dp->kode_barang.'</th>
-							<th class="align-middle">'.$dp->nama_barang.'</th>
-							<td class="align-middle text-center">'.$dp->jumlah.'</td>
-							<td class="align-middle text-center">Rp. '.number_format($dp->harga_barang).'</td>
-							<td class="align-middle text-center">Rp. '.number_format($dp->total_bayar).'</td>
-							<th class="align-middle">'.$dp->keterangan.'</th>
-							<td class="align-middle text-center">'.date('d-m-Y H:i:s', strtotime($dp->created_at)).'</td>
-							<td class="align-middle text-center">'.$dp->nama_user.'</td>
-						</tr>';
-			}
-			echo $html;
-		}
-	
 	}
 	
 	/* End of file Transaksi.php */

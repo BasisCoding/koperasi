@@ -233,7 +233,6 @@ $(document).ready(function() {
 		  }
 		})
     });
-
 // End Halaman Barang
 
 // Halaman Persediaan
@@ -414,7 +413,7 @@ $(document).ready(function() {
 // End Halaman Supplier
 
 // Halaman Transaksi
-    function data_reload_transaksi() {
+    function data_reload_transaksi(dari, sampai) {
         $.ajax({
             url: base_url+'admin/Transaksi/data_barang',
             type: 'POST',
@@ -428,32 +427,73 @@ $(document).ready(function() {
         $.ajax({
             url: base_url+'admin/Transaksi/riwayat_transaksi',
             type: 'POST',
+            data:{dari:dari, sampai:sampai},
             dataType: 'HTML',
             async:false,
             success:function (data) {
                 $('#riwayat-transaksi').html(data);
             }
         });
+
+        $.ajax({
+            url: base_url+'admin/Transaksi/riwayat_all_transaksi',
+            type: 'POST',
+            data:{dari:dari, sampai:sampai},
+            dataType: 'HTML',
+            async:false,
+            success:function (data) {
+                $('#riwayat-all-transaksi').html(data);
+            }
+        });
     }
 
+    $('#filter_transaksi').daterangepicker({
+        opens: 'right'
+    }, function(start, end, label) {
+        data_reload_transaksi(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+    });
+
     $('#data-barang-transaksi').on('click', '.proses-transaksi', function() {
+
+        var format = new Intl.NumberFormat('en-IN', { 
+                style: 'currency', 
+                currency: 'IDR', 
+                minimumFractionDigits: 0, 
+            });
         var id = $(this).attr('data-id');
         var nama = $(this).attr('data-nama');
         var kode = $(this).attr('data-kode');
         var harga = $(this).attr('data-harga');
         var stok = $(this).attr('data-stok');
 
-        $('[name="kode_barang_transaksi"]').val(kode);
-        $('[name="id_barang_transaksi"]').val(id);
-        $('[name="nama_barang_transaksi"]').val(nama);
-        $('[name="harga_transaksi"]').val(harga);
-        $('[name="stok_transaksi"]').val(stok);
+        $('#form-add-transaksi').prepend(''+
+            '<div class="card order-produk" id="'+kode+'">'+
+              '<div class="card-body p-3 row align-middle">'+
+                '<div class="col">'+
+                  '<h6 class="text-bold">'+
+                    '<label class="float-left">'+nama+'</label>'+
+                    '<label class="float-right">'+format.format(harga)+'</label>'+
+                  '</h6>'+
+                  '<input type="hidden" value="'+id+'" name="id_barang_transaksi[]">'+
+                  '<input type="hidden" value="'+kode+'" name="kode_barang_transaksi[]">'+
+                  '<input type="hidden" value="'+harga+'" name="harga_transaksi[]">'+
+                  '<input type="hidden" value="'+stok+'" name="stok_transaksi[]">'+
+                  '<input type="number" required name="jumlah_transaksi[]" placeholder="Jumlah" class="form-control form-control-sm">'+
+                '</div>'+
+                '<button type="button" class="col-2 btn btn-danger delete-order" data-id="'+kode+'"><span class="fas fa-minus-circle"></span></button>'+
+              '</div>'+
+            '</div>'+
+        '');
+    
+        $(this).attr('disabled', true);
     });
 
-    $('[name="jumlah_transaksi"]').keyup(function() {
-        var total_bayar = parseInt($(this).val()) * parseInt($('[name="harga_transaksi"]').val());
-        $('[name="total_bayar_transaksi"]').val(total_bayar);
-    });
+    $('#form-add-transaksi').on('click', '.delete-order', function() {
+        var id = $('.delete-order').attr('data-id');
+        $('#'+id).remove();
+        var barang = $('.proses-transaksi').attr('data-kode', id).attr('disabled', false);;
+
+    });     
 
     $('#form-add-transaksi').submit(function() {
         
@@ -469,7 +509,8 @@ $(document).ready(function() {
             },
             success:function(response) {
                 $("#form-add-transaksi").trigger("reset");
-                $("#btn-save-add-transaksi").html('Beli Lagi');
+                $("#form-add-transaksi").find(".card").remove();
+                $("#btn-save-add-transaksi").html('Order');
                 $("#btn-save-add-transaksi").attr('disabled', false);
                 Toast.fire({
                     icon: response.status,
@@ -480,7 +521,50 @@ $(document).ready(function() {
         });
 
         return false;
-    });    
+    });
+
+    function printDiv() {
+        $('.hidden-print').css('display', 'none');
+        var divToPrint=document.getElementById('modal-detail-transaksi');
+        var newWin=window.open('','Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+        newWin.document.close();
+        setTimeout(function(){newWin.close();},10);
+    }
+
+    $('#btn-cetak-struk').click(function() {
+        printDiv();
+    });
+
+    $('#riwayat-transaksi').on('click', '.detail-transaksi', function() {
+        var kode = $(this).attr('data-kode_transaksi');
+        var jumlah = $(this).attr('data-jumlah_barang');
+        var quantity = $(this).attr('data-total_quantity');
+        var tharga = $(this).attr('data-total_harga');
+        var created_at = $(this).attr('data-created_at');
+        var created_by = $(this).attr('data-created_by');
+
+        $('.kode_transaksi_detail').html(kode);
+        $('.jumlah_barang_detail').html(jumlah);
+        $('.total_quantity_detail').html(quantity);
+        $('.total_bayar_detail').html('Rp. '+tharga);
+        $('.created_at_detail').html(created_at);
+        $('.created_by_detail').html(created_by);
+
+        $('#modal-detail-transaksi').modal('show');
+
+        $.ajax({
+            url: base_url+'admin/Transaksi/get_detail_transaksi',
+            type: 'POST',
+            dataType: 'HTML',
+            data:{kode:kode},
+            success:function (data) {
+                $('#detail-transaksi').html(data);
+            }
+        });
+    }); 
+
 // End Halaman Transaksi
 
 // Halaman Laporan Persediaan
@@ -541,7 +625,37 @@ $(document).ready(function() {
         ],
         responsive:true
     });
+
+    $('#table-riwayat-all-transaksi').DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6 mt-1'B><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        buttons: [
+            {
+                extend:    'excel',
+                className: 'btn btn-sm',
+            },
+            {
+                extend:    'pdf',
+                className: 'btn btn-sm',
+
+            },
+            {
+                extend:    'print',
+                className: 'btn btn-sm',
+
+            }
+        ],
+        responsive:true
+    });
 // End Halaman Laporan Persediaan
+    $('#table-barang-transaksi').DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6 mt-1'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        responsive:true
+    });
+
 
     $('#table-barang').DataTable({
         dom: "<'row'<'col-sm-12 col-md-6 mt-1'B><'col-sm-12 col-md-6'f>>" +
