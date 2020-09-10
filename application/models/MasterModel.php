@@ -84,6 +84,19 @@
 		{
 			$this->db->delete('supplier', array('id_supplier' => $id));
 		}
+
+		function data_users()
+		{
+			return $this->db->get_where('user', array('level' => 1))->result();
+		}
+
+		function tambah_users($data){
+			$this->db->insert('user', $data);
+		}
+
+		function delete_user($id){
+			$this->db->delete('user', array('id_user' => $id));
+		}
 	
 	}
 	

@@ -12,6 +12,7 @@ $(document).ready(function() {
     data_supplier_reload();
     data_reload_transaksi();
     laporan_persediaan();
+    data_users();
 
 // Halaman Barang
 	function data_reload() {
@@ -525,12 +526,17 @@ $(document).ready(function() {
 
     function printDiv() {
         $('.hidden-print').css('display', 'none');
+
         var divToPrint=document.getElementById('modal-detail-transaksi');
         var newWin=window.open('','Print-Window');
         newWin.document.open();
         newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
         newWin.document.close();
-        setTimeout(function(){newWin.close();},10);
+        setTimeout(function(){
+            newWin.close();
+            $('.hidden-print').css('display', 'block');
+        },10);
+
     }
 
     $('#btn-cetak-struk').click(function() {
@@ -649,13 +655,95 @@ $(document).ready(function() {
         responsive:true
     });
 // End Halaman Laporan Persediaan
+
+// Users
+    
+     function data_users() {
+        $.ajax({
+            url: base_url+'yayasan/Users/data_users',
+            type: 'POST',
+            dataType: 'HTML',
+            async:false,
+            success:function (data) {
+                $('#data-users').html(data);
+            }
+        });
+    }
+
+    $('#form-user').submit(function() {
+
+        var formData = new FormData();
+        formData.append('username', $('[name="username"]').val()); 
+        formData.append('nama_user', $('[name="nama_user"]').val()); 
+        formData.append('password', $('[name="password"]').val()); 
+        formData.append('status', $('[name="status"]').val()); 
+        
+        formData.append('foto', $('[name="foto"]')[0].files[0]);
+
+
+        $.ajax({
+            url: base_url+'yayasan/Users/add_user',
+            type: 'POST',
+            dataType: 'JSON',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success:function(response){
+                $('#form-user').trigger("reset");
+                Toast.fire({
+                    icon: response.status,
+                    title: response.message
+                });
+                data_users();
+            }
+        });
+        
+        return false;
+    });
+
+     $('#data-users').on('click', '.delete-user', function(event) {
+        event.preventDefault();
+        var id = $(this).attr('data-id');
+        var nama = $(this).attr('data-nama');
+        var username = $(this).attr('data-username');
+
+        Swal.fire({
+          title: 'Apakah Anda Yakin Ingin Menghapus Data '+nama+'?',
+          text: "Data Akan Di Hapus Secara Permanen !!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, Delete!'
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+                url: base_url+'yayasan/Users/delete_user',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{id:id, username:username},
+                success:function (response) {
+                    Swal.fire(
+                      'Deleted!',
+                      'Data Telah Di Hapus',
+                      'success'
+                    );
+                    data_users();
+                }
+            });
+          }
+        })
+    });
+
+// Users
+// Datatable   
     $('#table-barang-transaksi').DataTable({
         dom: "<'row'<'col-sm-12 col-md-6 mt-1'l><'col-sm-12 col-md-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         responsive:true
     });
-
 
     $('#table-barang').DataTable({
         dom: "<'row'<'col-sm-12 col-md-6 mt-1'B><'col-sm-12 col-md-6'f>>" +
@@ -702,4 +790,6 @@ $(document).ready(function() {
         ],
         responsive:true
     });
+// Datatable
+
 });
